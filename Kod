@@ -7,3 +7,12 @@ using namespace std;
 class StationException : public exception {
 private:
     string message;
+public:
+    explicit StationException(const string& msg) : message(msg) {}
+
+    const char* what() const noexcept override {
+        return message.c_str();
+    }
+};
+
+#endif
