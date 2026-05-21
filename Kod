@@ -1,1 +1,3 @@
+#ifndef STATION_EXCEPTION_H
+#define STATION_EXCEPTION_H
 
