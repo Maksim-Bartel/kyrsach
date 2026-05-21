@@ -1,1 +1,29 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
 
+using namespace std;
+
+enum class ResourceType { WATER, FOOD, OXYGEN, FUEL, ELECTRICITY };
+enum class Rank { COMMANDER, ENGINEER, SCIENTIST, DOCTOR, PILOT };
+enum class ModuleType { HABITATION, LABORATORY, ENGINEERING, DOCKING, STORAGE };
+
+class Resource {
+private:
+    ResourceType type;
+    double amount;
+    double maxCapacity;
+    double consumptionRate;
+
+public:
+    Resource() : type(ResourceType::WATER), amount(0), maxCapacity(0), consumptionRate(0) {}
+
+    Resource(ResourceType t, double maxCap, double consRate) {
+        type = t;
+        maxCapacity = maxCap;
+        amount = maxCap;
+        consumptionRate = consRate;
+    }
