@@ -1,3 +1,9 @@
 #ifndef STATION_EXCEPTION_H
 #define STATION_EXCEPTION_H
+#include <exception>
+#include <string>
+using namespace std;
 
+class StationException : public exception {
+private:
+    string message;
