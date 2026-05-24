@@ -27,3 +27,101 @@ public:
         amount = maxCap;
         consumptionRate = consRate;
     }
+string getName() const {
+        if (type == ResourceType::WATER) return "Вода";
+        if (type == ResourceType::FOOD) return "Еда";
+        if (type == ResourceType::OXYGEN) return "Кислород";
+        if (type == ResourceType::FUEL) return "Топливо";
+        if (type == ResourceType::ELECTRICITY) return "Электричество";
+        return "Неизвестно";
+    }
+
+    double getAmount() const { return amount; }
+    double getMaxCapacity() const { return maxCapacity; }
+    double getConsumptionRate() const { return consumptionRate; }
+    double getPercentage() const { return (amount / maxCapacity) * 100.0; }
+    ResourceType getType() const { return type; }
+
+    void add(double value) { 
+        amount += value; 
+        if (amount > maxCapacity) amount = maxCapacity; 
+    }
+
+    void consume(double value) { 
+        if (amount >= value) {
+            amount -= value; 
+        } else {
+            amount = 0; 
+        }
+    }
+
+                    // Функции для сохранения и загрузки
+    void save(ofstream& file) const {
+        file << (int)type << " " << amount << " " << maxCapacity << " " << consumptionRate << "\n";
+    }
+
+    void load(ifstream& file) {
+        int t;
+        file >> t >> amount >> maxCapacity >> consumptionRate;
+        type = (ResourceType)t;
+    }
+
+                   // Вывод информации о ресурсе
+    void print() const {
+        cout << getName() << ": " << amount << "/" << maxCapacity
+             << " (" << fixed << setprecision(1) << getPercentage() << "%) | Расход: " << consumptionRate << "/ч\n";
+    }
+};
+
+
+class CrewMember {
+private:
+    int id;
+    string name;
+    Rank rank;
+    int health;
+    int morale;
+    int experience;
+    bool isOnDuty;
+
+public:
+    CrewMember() : id(0), name(""), rank(Rank::COMMANDER), health(100), morale(100), experience(0), isOnDuty(true) {}
+
+    CrewMember(int i, string n, Rank r) {
+        id = i;
+        name = n;
+        rank = r;
+        health = 100;
+        morale = 80;
+        experience = 0;
+        isOnDuty = true;
+    }
+
+    int getId() const { return id; }
+    string getName() const { return name; }
+    bool getIsOnDuty() const { return isOnDuty; }
+
+    string getRankString() const {
+        if (rank == Rank::COMMANDER) return "Командир";
+        if (rank == Rank::ENGINEER) return "Инженер";
+        if (rank == Rank::SCIENTIST) return "Ученый";
+        if (rank == Rank::DOCTOR) return "Доктор";
+        if (rank == Rank::PILOT) return "Пилот";
+        return "Неизвестно";
+    }
+
+    void changeHealth(int delta) { 
+        health += delta; 
+        if (health > 100) health = 100; 
+        if (health < 0) health = 0; 
+    }
+
+    void changeMorale(int delta) { 
+        morale += delta; 
+        if (morale > 100) morale = 100; 
+        if (morale < 0) morale = 0; 
+    }
+
+    void gainExperience(int delta) { 
+        experience += delta; 
+    }
