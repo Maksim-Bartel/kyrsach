@@ -10,5 +10,7 @@ using namespace std;
 class StationManager {
 private:
 	vector<Resource> resources;
+    vector<CrewMember> crew;
+    vector<Module> modules;
 
 }
