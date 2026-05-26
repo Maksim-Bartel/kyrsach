@@ -125,3 +125,99 @@ public:
     void gainExperience(int delta) { 
         experience += delta; 
     }
+    void save(ofstream& file) const {
+        // Используем пробелы, но имя пишем в конце, чтобы считывать через getline
+        file << id << " " << (int)rank << " " << health << " " << morale << " " << experience << " " << isOnDuty << " " << name << "\n";
+    }
+
+    void load(ifstream& file) {
+        int r, duty;
+        file >> id >> r >> health >> morale >> experience >> duty;
+        rank = (Rank)r;
+        isOnDuty = (duty == 1);
+        file.ignore(); // Очищаем буфер после чтения чисел
+        getline(file, name);
+    }
+
+    void print() const {
+        cout << "ID:" << id << " | " << name << " (" << getRankString() << ")"
+            << " | Здоровье:" << health << " | Мораль:" << morale << " | Опыт:" << experience << "\n";
+    }
+};
+
+class Module {
+private:
+    int id;
+    string name;
+    ModuleType type;
+    int maxCrew;
+    int powerConsumption;
+    bool isOperational;
+    vector<int> crewIds; // ID членов экипажа внутри модуля
+
+public:
+    Module() : id(0), name(""), type(ModuleType::HABITATION), maxCrew(0), powerConsumption(0), isOperational(true) {}
+
+    Module(int i, string n, ModuleType t, int maxC, int power) {
+        id = i;
+        name = n;
+        type = t;
+        maxCrew = maxC;
+        powerConsumption = power;
+        isOperational = true;
+    }
+
+    int getId() const { return id; }
+    string getName() const { return name; }
+
+    string getTypeString() const {
+        if (type == ModuleType::HABITATION) return "Жилой";
+        if (type == ModuleType::LABORATORY) return "Лаборатория";
+        if (type == ModuleType::ENGINEERING) return "Инженерный";
+        if (type == ModuleType::DOCKING) return "Стыковочный";
+        if (type == ModuleType::STORAGE) return "Складской";
+        return "Неизвестно";
+    }
+
+    bool addCrewMember(int crewId) {
+        // Проверка: есть ли место и не добавлен ли уже этот человек
+        if (crewIds.size() >= (size_t)maxCrew) return false;
+
+        for (int id : crewIds) {
+            if (id == crewId) return false;
+        }
+
+        crewIds.push_back(crewId);
+        return true;
+    }
+
+    void save(ofstream& file) const {
+        file << id << " " << (int)type << " " << maxCrew << " " << powerConsumption << " " << isOperational << " " << crewIds.size() << " ";
+        for (int cid : crewIds) {
+            file << cid << " ";
+        }
+        file << name << "\n";
+    }
+
+    void load(ifstream& file) {
+        int t, op, crewSize;
+        file >> id >> t >> maxCrew >> powerConsumption >> op >> crewSize;
+        type = (ModuleType)t;
+        isOperational = (op == 1);
+
+        crewIds.clear();
+        for (int i = 0; i < crewSize; i++) {
+            int cid;
+            file >> cid;
+            crewIds.push_back(cid);
+        }
+        file.ignore();
+        getline(file, name);
+    }
+
+    void print() const {
+        cout << "[#" << id << "] " << name << " (" << getTypeString() << ")"
+            << " | Экипаж: " << crewIds.size() << "/" << maxCrew
+            << " | " << (isOperational ? "Работает" : "Неисправен") << "\n";
+    }
+};
