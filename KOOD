@@ -15,4 +15,8 @@ private:
     int nextCrewId;
     int nextModuleId;
     int timeHourse;
+
+ void updateResources(int hours) {
+
+}
 }
