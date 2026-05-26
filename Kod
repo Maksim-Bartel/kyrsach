@@ -27,7 +27,7 @@ public:
         amount = maxCap;
         consumptionRate = consRate;
     }
-string getName() const {
+string getName() const { //возвращаем название ресурса на русском
         if (type == ResourceType::WATER) return "Вода";
         if (type == ResourceType::FOOD) return "Еда";
         if (type == ResourceType::OXYGEN) return "Кислород";
@@ -36,7 +36,7 @@ string getName() const {
         return "Неизвестно";
     }
 
-    double getAmount() const { return amount; }
+    double getAmount() const { return amount; } // функция для показа сколько ресурса осталось
     double getMaxCapacity() const { return maxCapacity; }
     double getConsumptionRate() const { return consumptionRate; }
     double getPercentage() const { return (amount / maxCapacity) * 100.0; }
@@ -101,7 +101,7 @@ public:
     string getName() const { return name; }
     bool getIsOnDuty() const { return isOnDuty; }
 
-    string getRankString() const {
+    string getRankString() const { //функция для присвоения ранга члену экипажа 
         if (rank == Rank::COMMANDER) return "Командир";
         if (rank == Rank::ENGINEER) return "Инженер";
         if (rank == Rank::SCIENTIST) return "Ученый";
@@ -110,7 +110,7 @@ public:
         return "Неизвестно";
     }
 
-    void changeHealth(int delta) { 
+    void changeHealth(int delta) { //проверка здоровья
         health += delta; 
         if (health > 100) health = 100; 
         if (health < 0) health = 0; 
@@ -126,7 +126,7 @@ public:
         experience += delta; 
     }
     void save(ofstream& file) const {
-        // Используем пробелы, но имя пишем в конце, чтобы считывать через getline
+        // имя пишем в конце, чтобы считывать через getline
         file << id << " " << (int)rank << " " << health << " " << morale << " " << experience << " " << isOnDuty << " " << name << "\n";
     }
 
