@@ -12,5 +12,7 @@ private:
 	vector<Resource> resources;
     vector<CrewMember> crew;
     vector<Module> modules;
-
+    int nextCrewId;
+    int nextModuleId;
+    int timeHourse;
 }
