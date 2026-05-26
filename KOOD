@@ -8,5 +8,7 @@
 using namespace std;
 
 class StationManager {
+private:
+	vector<Resource> resources;
 
 }
