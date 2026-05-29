@@ -239,4 +239,14 @@ private:
     }
 
 }
+
+void updateCrewStatus() {
+    for (size_t i = 0; i < crew.size(); i++) {
+        if (crew[i].getIsOnDuty()) {
+            crew[i].changeMorale(-1);
+            crew[i].changeHealth(-1);
+        }
+        crew[i].gainExperience(1);
+    }
 }
+};
