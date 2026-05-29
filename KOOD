@@ -278,5 +278,9 @@ void saveGame() {
     ofstream resFile("resources.txt");
     resFile << resources.size() << "\n";
     for (const auto& r : resources) r.save(resFile);
+
+    ofstream crewFile("crew.txt");
+    crewFile << crew.size() << "\n";
+    for (const auto& m : crew) m.save(crewFile);
 }
 };
