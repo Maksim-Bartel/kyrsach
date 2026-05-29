@@ -273,4 +273,10 @@ void initializeDefaultData() {
     modules.push_back(Module(nextModuleId++, "Наука-2", ModuleType::LABORATORY, 4, 150));
     modules.push_back(Module(nextModuleId++, "Энергия-3", ModuleType::ENGINEERING, 3, 200));
 }
+
+void saveGame() {
+    ofstream resFile("resources.txt");
+    resFile << resources.size() << "\n";
+    for (const auto& r : resources) r.save(resFile);
+}
 };
