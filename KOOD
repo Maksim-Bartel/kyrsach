@@ -232,6 +232,11 @@ private:
     int timeHourse;
 
  void updateResources(int hours) {
+    for (int i = 0; i < hours; i++) {
+        for (size_t j = 0; j < resources.size(); j++) {
+            resources[j].consume(resources[j].getConsumptionRate());
+        }
+    }
 
 }
 }
