@@ -286,5 +286,9 @@ void saveGame() {
     ofstream modFile("modules.txt");
     modFile << modules.size() << "\n";
     for (const auto& m : modules) m.save(modFile);
+
+    ofstream metaFile("meta.tst");
+    metaFile << nextCrewId << " " << nextModuleId << " " << timeHours;
+    cout << "Игра успешно сохранена!\n";
 }
 };
