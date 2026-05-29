@@ -282,5 +282,9 @@ void saveGame() {
     ofstream crewFile("crew.txt");
     crewFile << crew.size() << "\n";
     for (const auto& m : crew) m.save(crewFile);
+
+    ofstream modFile("modules.txt");
+    modFile << modules.size() << "\n";
+    for (const auto& m : modules) m.save(modFile);
 }
 };
