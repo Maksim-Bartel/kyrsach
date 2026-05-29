@@ -256,4 +256,21 @@ public:
         nextModuleId = 1;
         timeHours = 0;
     }
+
+void initializeDefaultData() {
+    resources.push_back(Resource(ResourceType::WATER, 5000, 10));
+    resources.push_back(Resource(ResourceType::FOOD, 3000, 8));
+    resources.push_back(Resource(ResourceType::OXYGEN, 10000, 20));
+    resources.push_back(Resource(ResourceType::FUEL, 2000, 5));
+    resources.push_back(Resource(ResourceType::ELECTRICITY, 1000, 15));
+
+    crew.push_back(CrewMember(nextCrewId++, "Иван Петров", Rank::COMMANDER));
+    crew.push_back(CrewMember(nextCrewId++, "Мария Иванова", Rank::ENGINEER));
+    crew.push_back(CrewMember(nextCrewId++, "Алексей Смирнов", Rank::SCIENTIST));
+    crew.push_back(CrewMember(nextCrewId++, "Елена Козлова", Rank::DOCTOR));
+
+    modules.push_back(Module(nextModuleId++, "Звезда-1", ModuleType::HABITATION, 6, 100));
+    modules.push_back(Module(nextModuleId++, "Наука-2", ModuleType::LABORATORY, 4, 150));
+    modules.push_back(Module(nextModuleId++, "Энергия-3", ModuleType::ENGINEERING, 3, 200));
+}
 };
