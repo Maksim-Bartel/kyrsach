@@ -249,4 +249,11 @@ void updateCrewStatus() {
         crew[i].gainExperience(1);
     }
 }
+
+public:
+    StationManager() {
+        nextCrewId = 1;
+        nextModuleId = 1;
+        timeHours = 0;
+    }
 };
