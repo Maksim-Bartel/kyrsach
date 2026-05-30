@@ -1,0 +1,294 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+
+using namespace std;
+
+enum class ResourceType { WATER, FOOD, OXYGEN, FUEL, ELECTRICITY };
+enum class Rank { COMMANDER, ENGINEER, SCIENTIST, DOCTOR, PILOT };
+enum class ModuleType { HABITATION, LABORATORY, ENGINEERING, DOCKING, STORAGE };
+
+class Resource {
+private:
+    ResourceType type;
+    double amount;
+    double maxCapacity;
+    double consumptionRate;
+
+public:
+    Resource() : type(ResourceType::WATER), amount(0), maxCapacity(0), consumptionRate(0) {}
+
+    Resource(ResourceType t, double maxCap, double consRate) {
+        type = t;
+        maxCapacity = maxCap;
+        amount = maxCap;
+        consumptionRate = consRate;
+    }
+string getName() const { //возвращаем название ресурса на русском
+        if (type == ResourceType::WATER) return "Вода";
+        if (type == ResourceType::FOOD) return "Еда";
+        if (type == ResourceType::OXYGEN) return "Кислород";
+        if (type == ResourceType::FUEL) return "Топливо";
+        if (type == ResourceType::ELECTRICITY) return "Электричество";
+        return "Неизвестно";
+    }
+
+    double getAmount() const { return amount; } // функция для показа сколько ресурса осталось
+    double getMaxCapacity() const { return maxCapacity; }
+    double getConsumptionRate() const { return consumptionRate; }
+    double getPercentage() const { return (amount / maxCapacity) * 100.0; }
+    ResourceType getType() const { return type; }
+
+    void add(double value) { 
+        amount += value; 
+        if (amount > maxCapacity) amount = maxCapacity; 
+    }
+
+    void consume(double value) { 
+        if (amount >= value) {
+            amount -= value; 
+        } else {
+            amount = 0; 
+        }
+    }
+
+                    // Функции для сохранения и загрузки
+    void save(ofstream& file) const {
+        file << (int)type << " " << amount << " " << maxCapacity << " " << consumptionRate << "\n";
+    }
+
+    void load(ifstream& file) {
+        int t;
+        file >> t >> amount >> maxCapacity >> consumptionRate;
+        type = (ResourceType)t;
+    }
+
+                   // Вывод информации о ресурсе
+    void print() const {
+        cout << getName() << ": " << amount << "/" << maxCapacity
+             << " (" << fixed << setprecision(1) << getPercentage() << "%) | Расход: " << consumptionRate << "/ч\n";
+    }
+};
+
+
+class CrewMember {
+private:
+    int id;
+    string name;
+    Rank rank;
+    int health;
+    int morale;
+    int experience;
+    bool isOnDuty;
+
+public:
+    CrewMember() : id(0), name(""), rank(Rank::COMMANDER), health(100), morale(100), experience(0), isOnDuty(true) {}
+
+    CrewMember(int i, string n, Rank r) {
+        id = i;
+        name = n;
+        rank = r;
+        health = 100;
+        morale = 80;
+        experience = 0;
+        isOnDuty = true;
+    }
+
+    int getId() const { return id; }
+    string getName() const { return name; }
+    bool getIsOnDuty() const { return isOnDuty; }
+
+    string getRankString() const { //функция для присвоения ранга члену экипажа 
+        if (rank == Rank::COMMANDER) return "Командир";
+        if (rank == Rank::ENGINEER) return "Инженер";
+        if (rank == Rank::SCIENTIST) return "Ученый";
+        if (rank == Rank::DOCTOR) return "Доктор";
+        if (rank == Rank::PILOT) return "Пилот";
+        return "Неизвестно";
+    }
+
+    void changeHealth(int delta) { //проверка здоровья
+        health += delta; 
+        if (health > 100) health = 100; 
+        if (health < 0) health = 0; 
+    }
+
+    void changeMorale(int delta) { 
+        morale += delta; 
+        if (morale > 100) morale = 100; 
+        if (morale < 0) morale = 0; 
+    }
+
+    void gainExperience(int delta) { 
+        experience += delta; 
+    }
+    void save(ofstream& file) const {
+        // имя пишем в конце, чтобы считывать через getline
+        file << id << " " << (int)rank << " " << health << " " << morale << " " << experience << " " << isOnDuty << " " << name << "\n";
+    }
+
+    void load(ifstream& file) {
+        int r, duty;
+        file >> id >> r >> health >> morale >> experience >> duty;
+        rank = (Rank)r;
+        isOnDuty = (duty == 1);
+        file.ignore(); // Очищаем буфер после чтения чисел
+        getline(file, name);
+    }
+
+    void print() const {
+        cout << "ID:" << id << " | " << name << " (" << getRankString() << ")"
+            << " | Здоровье:" << health << " | Мораль:" << morale << " | Опыт:" << experience << "\n";
+    }
+};
+
+class Module {
+private:
+    int id;
+    string name;
+    ModuleType type;
+    int maxCrew;
+    int powerConsumption;
+    bool isOperational;
+    vector<int> crewIds; // ID членов экипажа внутри модуля
+
+public:
+    Module() : id(0), name(""), type(ModuleType::HABITATION), maxCrew(0), powerConsumption(0), isOperational(true) {}
+
+    Module(int i, string n, ModuleType t, int maxC, int power) {
+        id = i;
+        name = n;
+        type = t;
+        maxCrew = maxC;
+        powerConsumption = power;
+        isOperational = true;
+    }
+
+    int getId() const { return id; }
+    string getName() const { return name; }
+
+    string getTypeString() const {
+        if (type == ModuleType::HABITATION) return "Жилой";
+        if (type == ModuleType::LABORATORY) return "Лаборатория";
+        if (type == ModuleType::ENGINEERING) return "Инженерный";
+        if (type == ModuleType::DOCKING) return "Стыковочный";
+        if (type == ModuleType::STORAGE) return "Складской";
+        return "Неизвестно";
+    }
+
+    bool addCrewMember(int crewId) {
+        // Проверка: есть ли место и не добавлен ли уже этот человек
+        if (crewIds.size() >= (size_t)maxCrew) return false;
+
+        for (int id : crewIds) {
+            if (id == crewId) return false;
+        }
+
+        crewIds.push_back(crewId);
+        return true;
+    }
+
+    void save(ofstream& file) const {
+        file << id << " " << (int)type << " " << maxCrew << " " << powerConsumption << " " << isOperational << " " << crewIds.size() << " ";
+        for (int cid : crewIds) {
+            file << cid << " ";
+        }
+        file << name << "\n";
+    }
+
+    void load(ifstream& file) {
+        int t, op, crewSize;
+        file >> id >> t >> maxCrew >> powerConsumption >> op >> crewSize;
+        type = (ModuleType)t;
+        isOperational = (op == 1);
+
+        crewIds.clear();
+        for (int i = 0; i < crewSize; i++) {
+            int cid;
+            file >> cid;
+            crewIds.push_back(cid);
+        }
+        file.ignore();
+        getline(file, name);
+    }
+
+    void print() const {
+        cout << "[#" << id << "] " << name << " (" << getTypeString() << ")"
+            << " | Экипаж: " << crewIds.size() << "/" << maxCrew
+            << " | " << (isOperational ? "Работает" : "Неисправен") << "\n";
+    }
+};
+
+class StationManager {
+private:
+	vector<Resource> resources;
+    vector<CrewMember> crew;
+    vector<Module> modules;
+    int nextCrewId;
+    int nextModuleId;
+    int timeHourse;
+
+ void updateResources(int hours) {
+    for (int i = 0; i < hours; i++) {
+        for (size_t j = 0; j < resources.size(); j++) {
+            resources[j].consume(resources[j].getConsumptionRate());
+        }
+    }
+
+}
+
+void updateCrewStatus() {
+    for (size_t i = 0; i < crew.size(); i++) {
+        if (crew[i].getIsOnDuty()) {
+            crew[i].changeMorale(-1);
+            crew[i].changeHealth(-1);
+        }
+        crew[i].gainExperience(1);
+    }
+}
+
+public:
+    StationManager() {
+        nextCrewId = 1;
+        nextModuleId = 1;
+        timeHours = 0;
+    }
+
+void initializeDefaultData() {
+    resources.push_back(Resource(ResourceType::WATER, 5000, 10));
+    resources.push_back(Resource(ResourceType::FOOD, 3000, 8));
+    resources.push_back(Resource(ResourceType::OXYGEN, 10000, 20));
+    resources.push_back(Resource(ResourceType::FUEL, 2000, 5));
+    resources.push_back(Resource(ResourceType::ELECTRICITY, 1000, 15));
+
+    crew.push_back(CrewMember(nextCrewId++, "Иван Петров", Rank::COMMANDER));
+    crew.push_back(CrewMember(nextCrewId++, "Мария Иванова", Rank::ENGINEER));
+    crew.push_back(CrewMember(nextCrewId++, "Алексей Смирнов", Rank::SCIENTIST));
+    crew.push_back(CrewMember(nextCrewId++, "Елена Козлова", Rank::DOCTOR));
+
+    modules.push_back(Module(nextModuleId++, "Звезда-1", ModuleType::HABITATION, 6, 100));
+    modules.push_back(Module(nextModuleId++, "Наука-2", ModuleType::LABORATORY, 4, 150));
+    modules.push_back(Module(nextModuleId++, "Энергия-3", ModuleType::ENGINEERING, 3, 200));
+}
+
+void saveGame() {
+    ofstream resFile("resources.txt");
+    resFile << resources.size() << "\n";
+    for (const auto& r : resources) r.save(resFile);
+
+    ofstream crewFile("crew.txt");
+    crewFile << crew.size() << "\n";
+    for (const auto& m : crew) m.save(crewFile);
+
+    ofstream modFile("modules.txt");
+    modFile << modules.size() << "\n";
+    for (const auto& m : modules) m.save(modFile);
+
+    ofstream metaFile("meta.tst");
+    metaFile << nextCrewId << " " << nextModuleId << " " << timeHours;
+    cout << "Игра успешно сохранена!\n";
+}
+};
