@@ -364,5 +364,14 @@ void assignCrewToModule(int crewId, int moduleId) {
     else {    
         cout << "ID экипажа или модуля не найдены.\n";    
     }    
-}    
+}
+void addResource(ResourceType type, double amount) {    
+    for (auto& r : resources) {    
+        if (r.getType() == type) {    
+            r.add(amount);    
+            cout << "Добавлено " << amount << " ед. ресурса: " << r.getName() << "\n";    
+            return;    
+        }    
+    }    
+}
 };
