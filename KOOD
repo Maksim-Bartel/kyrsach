@@ -304,4 +304,10 @@ void showModules() const {
     cout << "\n=== МОДУЛИ СТАНЦИИ ===\n";
     for (const auto& m : modules) m.print();
 }
+void showStatus() const {
+    cout << "\n====== СТАТУС СТАНЦИИ ======\n";
+    cout << "Время работы: " << timeHours << " часов\n";
+    cout << "Экипаж: " << crew.size() << " человек\n";
+    cout << "Модули: " << modules.size() << " шт\n";
+}
 };
