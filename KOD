@@ -343,4 +343,26 @@ void removeModule(int id) {
     }
     if (!found) cout << "ID не найден\n";
 }
+void assignCrewToModule(int crewId, int moduleId) {    
+    size_t crewIdx = -1, modIdx = -1;    
+
+    for (size_t i = 0; i < crew.size(); i++) {    
+        if (crew[i].getId() == crewId) crewIdx = i;    
+    }    
+    for (size_t i = 0; i < modules.size(); i++) {    
+        if (modules[i].getId() == moduleId) modIdx = i;    
+    }    
+
+    if (crewIdx != (size_t)-1 && modIdx != (size_t)-1) {    
+        if (modules[modIdx].addCrewMember(crewId)) {    
+            cout << crew[crewIdx].getName() << " назначен в модуль " << modules[modIdx].getName() << "\n";    
+        }    
+        else {    
+            cout << "Не удалось назначить (нет мест или уже там).\n";    
+        }    
+    }    
+    else {    
+        cout << "ID экипажа или модуля не найдены.\n";    
+    }    
+}    
 };
