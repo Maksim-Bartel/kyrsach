@@ -310,4 +310,9 @@ void showStatus() const {
     cout << "Экипаж: " << crew.size() << " человек\n";
     cout << "Модули: " << modules.size() << " шт\n";
 }
+
+void addCrewMember(string name, Rank rank) {
+    crew.push_back(CrewMember(nextCrewId++, name, rank));
+    cout << "Добавлен член экипажа! ID: " << (nextCrewId - 1) << "\n";
+}
 };
