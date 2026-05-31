@@ -291,4 +291,9 @@ void saveGame() {
     metaFile << nextCrewId << " " << nextModuleId << " " << timeHours;
     cout << "Игра успешно сохранена!\n";
 }
+
+void showResources() const {
+    cout << "\n=== РЕСУРСЫ СТАНЦИИ ===\n";
+    for (const auto& r : resources) r.print();
+}
 };
