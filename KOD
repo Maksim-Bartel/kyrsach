@@ -326,4 +326,9 @@ void removeCrewMember(int id) {
     }
     if (!found) cout << "ID не найден\n";
 }
+
+void addModule(string name, ModuleType type, int maxCrew, int power) {
+    modules.push_back(Module(nextModuleId++, name, type, maxCrew, power));
+    cout << "Добавлен модуль! ID: " << (nextModuleId - 1) << "\n";
+}
 };
