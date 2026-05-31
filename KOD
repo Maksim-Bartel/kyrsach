@@ -331,4 +331,16 @@ void addModule(string name, ModuleType type, int maxCrew, int power) {
     modules.push_back(Module(nextModuleId++, name, type, maxCrew, power));
     cout << "Добавлен модуль! ID: " << (nextModuleId - 1) << "\n";
 }
+void removeModule(int id) {
+    bool found = false;
+    for (auto it = modules.begin(); it != modules.end(); ++it) {
+        if (it->getId() == id) {
+            modules.erase(it);
+            cout << "Модуль удален.\n";
+            found = true;
+            break;
+        }
+    }
+    if (!found) cout << "ID не найден\n";
+}
 };
