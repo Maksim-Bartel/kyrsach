@@ -300,4 +300,8 @@ void showCrew() const {
     cout << "\n=== ЭКИПАЖ СТАНЦИИ ===\n";
     for (const auto& c : crew) c.print();
 }
+void showModules() const {
+    cout << "\n=== МОДУЛИ СТАНЦИИ ===\n";
+    for (const auto& m : modules) m.print();
+}
 };
