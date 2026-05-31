@@ -291,4 +291,56 @@ void saveGame() {
     metaFile << nextCrewId << " " << nextModuleId << " " << timeHours;
     cout << "Игра успешно сохранена!\n";
 }
+
+void showResources() const {
+    cout << "\n=== РЕСУРСЫ СТАНЦИИ ===\n";
+    for (const auto& r : resources) r.print();
+}
+void showCrew() const {
+    cout << "\n=== ЭКИПАЖ СТАНЦИИ ===\n";
+    for (const auto& c : crew) c.print();
+}
+void showModules() const {
+    cout << "\n=== МОДУЛИ СТАНЦИИ ===\n";
+    for (const auto& m : modules) m.print();
+}
+void showStatus() const {
+    cout << "\n====== СТАТУС СТАНЦИИ ======\n";
+    cout << "Время работы: " << timeHours << " часов\n";
+    cout << "Экипаж: " << crew.size() << " человек\n";
+    cout << "Модули: " << modules.size() << " шт\n";
+}
+
+void addCrewMember(string name, Rank rank) {
+    crew.push_back(CrewMember(nextCrewId++, name, rank));
+    cout << "Добавлен член экипажа! ID: " << (nextCrewId - 1) << "\n";
+}
+void removeCrewMember(int id) {
+    bool found = false; for (auto it = crew.begin(); it != crew.end(); ++it) {
+        if (it->getId() == id) {
+            crew.erase(it);
+            cout << "Член экипажа удален.\n";
+            found = true;
+            break;
+        }
+    }
+    if (!found) cout << "ID не найден\n";
+}
+
+void addModule(string name, ModuleType type, int maxCrew, int power) {
+    modules.push_back(Module(nextModuleId++, name, type, maxCrew, power));
+    cout << "Добавлен модуль! ID: " << (nextModuleId - 1) << "\n";
+}
+void removeModule(int id) {
+    bool found = false;
+    for (auto it = modules.begin(); it != modules.end(); ++it) {
+        if (it->getId() == id) {
+            modules.erase(it);
+            cout << "Модуль удален.\n";
+            found = true;
+            break;
+        }
+    }
+    if (!found) cout << "ID не найден\n";
+}
 };
