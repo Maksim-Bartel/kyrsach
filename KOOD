@@ -315,4 +315,15 @@ void addCrewMember(string name, Rank rank) {
     crew.push_back(CrewMember(nextCrewId++, name, rank));
     cout << "Добавлен член экипажа! ID: " << (nextCrewId - 1) << "\n";
 }
+void removeCrewMember(int id) {
+    bool found = false; for (auto it = crew.begin(); it != crew.end(); ++it) {
+        if (it->getId() == id) {
+            crew.erase(it);
+            cout << "Член экипажа удален.\n";
+            found = true;
+            break;
+        }
+    }
+    if (!found) cout << "ID не найден\n";
+}
 };
