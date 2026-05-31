@@ -296,4 +296,8 @@ void showResources() const {
     cout << "\n=== РЕСУРСЫ СТАНЦИИ ===\n";
     for (const auto& r : resources) r.print();
 }
+void showCrew() const {
+    cout << "\n=== ЭКИПАЖ СТАНЦИИ ===\n";
+    for (const auto& c : crew) c.print();
+}
 };
