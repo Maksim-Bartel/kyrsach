@@ -1,4 +1,4 @@
-#include <iostream>
+	#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -371,6 +371,18 @@ void addResource(ResourceType type, double amount) {
             r.add(amount);    
             cout << "Добавлено " << amount << " ед. ресурса: " << r.getName() << "\n";    
             return;    
+        }    
+    }    
+}
+void simulateTime(int hours) {    
+    timeHours += hours;    
+    updateResources(hours);    
+    updateCrewStatus();    
+    cout << "Прошло " << hours << " часов. Общее время: " << timeHours << " часов.\n";    
+
+    for (const auto& r : resources) {    
+        if (r.getAmount() <= 0) {    
+            cout << "КРИТИЧЕСКИЙ УРОВЕНЬ: Закончился ресурс " << r.getName() << "!\n";    
         }    
     }    
 }
