@@ -432,7 +432,16 @@ void run() {
             addModule(name, (ModuleType)t, maxC, p);
             break;
         }
-
+        case 7: {
+            int id; cout << "ID модуля: "; cin >> id; removeModule(id); break;
+        }
+        case 8: {
+            int cid, mid;
+            cout << "ID экипажа: "; cin >> cid;
+            cout << "ID модуля: "; cin >> mid;
+            assignCrewToModule(cid, mid);
+            break;
+        }
         }
     }
 };
