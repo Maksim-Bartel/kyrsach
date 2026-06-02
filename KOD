@@ -303,6 +303,18 @@ voidData() {
             resources.push_back(r);
         }
     }
+
+    ifstream crewFile("crew.txt");
+    if (crewFile.is_open()) {
+       size_t size; crewFile >> size;
+        crew.clear();
+        for (size_t i = 0; i < size; i++) {
+            CrewMember c; c.load(crewFile);
+            crew.push_back(c);
+        }
+    }
+
+
 }
 
 void showResources() const {
