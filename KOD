@@ -461,3 +461,13 @@ void run() {
         } while (choice != 0);
     }
 };
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+
+    StationManager manager;
+    manager.loadData();
+    manager.run();
+
+    return 0;
+}
