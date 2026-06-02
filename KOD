@@ -27,6 +27,7 @@ public:
         amount = maxCap;
         consumptionRate = consRate;
     }
+
 string getName() const { //возвращаем название ресурса на русском
         if (type == ResourceType::WATER) return "Вода";
         if (type == ResourceType::FOOD) return "Еда";
@@ -72,7 +73,6 @@ string getName() const { //возвращаем название ресурса 
              << " (" << fixed << setprecision(1) << getPercentage() << "%) | Расход: " << consumptionRate << "/ч\n";
     }
 };
-
 
 class CrewMember {
 private:
@@ -125,6 +125,7 @@ public:
     void gainExperience(int delta) { 
         experience += delta; 
     }
+
     void save(ofstream& file) const {
         // имя пишем в конце, чтобы считывать через getline
         file << id << " " << (int)rank << " " << health << " " << morale << " " << experience << " " << isOnDuty << " " << name << "\n";
@@ -296,14 +297,17 @@ void showResources() const {
     cout << "\n=== РЕСУРСЫ СТАНЦИИ ===\n";
     for (const auto& r : resources) r.print();
 }
+
 void showCrew() const {
     cout << "\n=== ЭКИПАЖ СТАНЦИИ ===\n";
     for (const auto& c : crew) c.print();
 }
+
 void showModules() const {
     cout << "\n=== МОДУЛИ СТАНЦИИ ===\n";
     for (const auto& m : modules) m.print();
 }
+
 void showStatus() const {
     cout << "\n====== СТАТУС СТАНЦИИ ======\n";
     cout << "Время работы: " << timeHours << " часов\n";
@@ -315,6 +319,7 @@ void addCrewMember(string name, Rank rank) {
     crew.push_back(CrewMember(nextCrewId++, name, rank));
     cout << "Добавлен член экипажа! ID: " << (nextCrewId - 1) << "\n";
 }
+
 void removeCrewMember(int id) {
     bool found = false; for (auto it = crew.begin(); it != crew.end(); ++it) {
         if (it->getId() == id) {
@@ -331,6 +336,7 @@ void addModule(string name, ModuleType type, int maxCrew, int power) {
     modules.push_back(Module(nextModuleId++, name, type, maxCrew, power));
     cout << "Добавлен модуль! ID: " << (nextModuleId - 1) << "\n";
 }
+
 void removeModule(int id) {
     bool found = false;
     for (auto it = modules.begin(); it != modules.end(); ++it) {
@@ -343,6 +349,7 @@ void removeModule(int id) {
     }
     if (!found) cout << "ID не найден\n";
 }
+
 void assignCrewToModule(int crewId, int moduleId) {    
     size_t crewIdx = -1, modIdx = -1;    
 
@@ -365,6 +372,7 @@ void assignCrewToModule(int crewId, int moduleId) {
         cout << "ID экипажа или модуля не найдены.\n";    
     }    
 }
+
 void addResource(ResourceType type, double amount) {    
     for (auto& r : resources) {    
         if (r.getType() == type) {    
@@ -374,6 +382,7 @@ void addResource(ResourceType type, double amount) {
         }    
     }    
 }
+
 void simulateTime(int hours) {    
     timeHours += hours;    
     updateResources(hours);    
