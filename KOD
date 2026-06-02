@@ -419,7 +419,19 @@ void run() {
             cout << "Ранг (0-Командир, 1-Инженер, 2-Ученый, 3-Доктор, 4-Пилот): "; cin >> r;
             addCrewMember(name, (Rank)r);
             break;
-            }
+        }
+        case 5: {
+             int id; cout << "ID: "; cin >> id; removeCrewMember(id); break;
+        }
+        case 6: {
+            string name; int t, maxC, p;
+            cout << "Название: "; cin >> name;
+            cout << "Тип (0-Жилой, 1-Лаборатория, 2-Инженерный, 3-Стыковочный, 4-Складской): "; cin >> t;
+            cout << "Макс. экипаж: "; cin >> maxC;
+            cout << "Потребление энергии: "; cin >> p;
+            addModule(name, (ModuleType)t, maxC, p);
+            break;
+        }
         }
     }
 };
