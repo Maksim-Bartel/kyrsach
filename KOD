@@ -413,6 +413,12 @@ void run() {
         case 1: showResources(); break;
         case 2: showCrew(); break;
         case 3: showModules(); break;
+        case 4: {
+            string name; int r;
+            cout << "Имя: "; cin >> name;
+            cout << "Ранг (0-Командир, 1-Инженер, 2-Ученый, 3-Доктор, 4-Пилот): "; cin >> r;
+            addCrewMember(name, (Rank)r);
+            break;
             }
         }
     }
