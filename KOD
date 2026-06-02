@@ -318,6 +318,21 @@ voidData() {
     if (modFile.is_open()) {
         size_t size; modFile >> size;
         modules.clear();
+        for (size_t i = 0; i < size; i++) {
+            Module m; m.load(modFile);
+            modules.push_back(m);
+        }
+    }
+
+    ifstream metaFile("meta.txt");
+    if (metaFile.is_open()) {
+        metaFile >> nextCrewId >> nextModuleId >> timeHours;
+        cout << "Сохранение успешно загружено!\n";
+   }
+   else {
+        cout << "Файлы сохранений не найдены. Создана новая станция.\n";
+        initializeDefaultData();
+    }
 }
 
 void showResources() const {
