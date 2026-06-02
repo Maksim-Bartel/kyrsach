@@ -398,6 +398,13 @@ void run() {
         cout << "10. Пополнить ресурсы        11. Статус станции\n";
         cout << "12. Сохранить данные         13. Загрузить данные\n";
         cout << "0. Выход\nВыберите действие: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: showResources(); break;
+        case 2: showCrew(); break;
+        case 3: showModules(); break;
+            }
         }
     }
 };
