@@ -1,4 +1,4 @@
-	#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -27,6 +27,7 @@ public:
         amount = maxCap;
         consumptionRate = consRate;
     }
+
 string getName() const { //возвращаем название ресурса на русском
         if (type == ResourceType::WATER) return "Вода";
         if (type == ResourceType::FOOD) return "Еда";
@@ -72,7 +73,6 @@ string getName() const { //возвращаем название ресурса 
              << " (" << fixed << setprecision(1) << getPercentage() << "%) | Расход: " << consumptionRate << "/ч\n";
     }
 };
-
 
 class CrewMember {
 private:
@@ -125,6 +125,7 @@ public:
     void gainExperience(int delta) { 
         experience += delta; 
     }
+
     void save(ofstream& file) const {
         // имя пишем в конце, чтобы считывать через getline
         file << id << " " << (int)rank << " " << health << " " << morale << " " << experience << " " << isOnDuty << " " << name << "\n";
@@ -292,18 +293,70 @@ void saveData() {
     cout << "Игра успешно сохранена!\n";
 }
 
+voidData() {
+    ifstream resFile("resources.txt");
+    if (resFile.is_open()) {
+        size_t size; resFile >> size;
+        resources.clear();
+        for (size_t i = 0; i < size; i++) {
+            Resource r; r.load(resFile);
+            resources.push_back(r);
+        }
+    }
+
+    ifstream crewFile("crew.txt");
+    if (crewFile.is_open()) {
+       size_t size; crewFile >> size;
+        crew.clear();
+        for (size_t i = 0; i < size; i++) {
+            CrewMember c; c.load(crewFile);
+            crew.push_back(c);
+        }
+    }
+
+    ifstream modFile("modules.txt");
+    if (modFile.is_open()) {
+        size_t size; modFile >> size;
+        modules.clear();
+        for (size_t i = 0; i < size; i++) {
+            Module m; m.load(modFile);
+            modules.push_back(m);
+        }
+    }
+
+    ifstream metaFile("meta.txt");
+    if (metaFile.is_open()) {
+        metaFile >> nextCrewId >> nextModuleId >> timeHours;
+        cout << "Сохранение успешно загружено!\n";
+   }
+   else {
+        cout << "Файлы сохранений не найдены. Создана новая станция.\n";
+        initializeDefaultData();
+    }
+}
+
 void showResources() const {
     cout << "\n=== РЕСУРСЫ СТАНЦИИ ===\n";
     for (const auto& r : resources) r.print();
+        for (size_t i = 0; i < size; i++) {
+            Module m; m.load(modFile);
+            modules.push_back(m);
+        }
+    }
+
+
 }
+
 void showCrew() const {
     cout << "\n=== ЭКИПАЖ СТАНЦИИ ===\n";
     for (const auto& c : crew) c.print();
 }
+
 void showModules() const {
     cout << "\n=== МОДУЛИ СТАНЦИИ ===\n";
     for (const auto& m : modules) m.print();
 }
+
 void showStatus() const {
     cout << "\n====== СТАТУС СТАНЦИИ ======\n";
     cout << "Время работы: " << timeHours << " часов\n";
@@ -315,6 +368,7 @@ void addCrewMember(string name, Rank rank) {
     crew.push_back(CrewMember(nextCrewId++, name, rank));
     cout << "Добавлен член экипажа! ID: " << (nextCrewId - 1) << "\n";
 }
+
 void removeCrewMember(int id) {
     bool found = false; for (auto it = crew.begin(); it != crew.end(); ++it) {
         if (it->getId() == id) {
@@ -331,6 +385,7 @@ void addModule(string name, ModuleType type, int maxCrew, int power) {
     modules.push_back(Module(nextModuleId++, name, type, maxCrew, power));
     cout << "Добавлен модуль! ID: " << (nextModuleId - 1) << "\n";
 }
+
 void removeModule(int id) {
     bool found = false;
     for (auto it = modules.begin(); it != modules.end(); ++it) {
@@ -343,6 +398,7 @@ void removeModule(int id) {
     }
     if (!found) cout << "ID не найден\n";
 }
+
 void assignCrewToModule(int crewId, int moduleId) {    
     size_t crewIdx = -1, modIdx = -1;    
 
@@ -365,6 +421,7 @@ void assignCrewToModule(int crewId, int moduleId) {
         cout << "ID экипажа или модуля не найдены.\n";    
     }    
 }
+
 void addResource(ResourceType type, double amount) {    
     for (auto& r : resources) {    
         if (r.getType() == type) {    
@@ -374,6 +431,7 @@ void addResource(ResourceType type, double amount) {
         }    
     }    
 }
+
 void simulateTime(int hours) {    
     timeHours += hours;    
     updateResources(hours);    
@@ -387,5 +445,78 @@ void simulateTime(int hours) {
     }    
 }
 
-///fggfgfg
+void run() {
+    int choice;
+    do {
+        cout << "\n========== SPACE STATION MANAGER ==========\n";
+        cout << "1. Ресурсы    2. Экипаж      3. Модули\n";
+        cout << "4. Добавить члена экипажа    5. Удалить члена экипажа\n";
+        cout << "6. Добавить модуль           7. Удалить модуль\n";
+        cout << "8. Назначить в модуль        9. Симуляция времени\n";
+        cout << "10. Пополнить ресурсы        11. Статус станции\n";
+        cout << "12. Сохранить данные         13. Загрузить данные\n";
+        cout << "0. Выход\nВыберите действие: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: showResources(); break;
+        case 2: showCrew(); break;
+        case 3: showModules(); break;
+        case 4: {
+            string name; int r;
+            cout << "Имя: "; cin >> name;
+            cout << "Ранг (0-Командир, 1-Инженер, 2-Ученый, 3-Доктор, 4-Пилот): "; cin >> r;
+            addCrewMember(name, (Rank)r);
+            break;
+        }
+        case 5: {
+             int id; cout << "ID: "; cin >> id; removeCrewMember(id); break;
+        }
+        case 6: {
+            string name; int t, maxC, p;
+            cout << "Название: "; cin >> name;
+            cout << "Тип (0-Жилой, 1-Лаборатория, 2-Инженерный, 3-Стыковочный, 4-Складской): "; cin >> t;
+            cout << "Макс. экипаж: "; cin >> maxC;
+            cout << "Потребление энергии: "; cin >> p;
+            addModule(name, (ModuleType)t, maxC, p);
+            break;
+        }
+        case 7: {
+            int id; cout << "ID модуля: "; cin >> id; removeModule(id); break;
+        }
+        case 8: {
+            int cid, mid;
+            cout << "ID экипажа: "; cin >> cid;
+            cout << "ID модуля: "; cin >> mid;
+            assignCrewToModule(cid, mid);
+            break;
+        }
+        case 9: {
+            int h; cout << "Часы: "; cin >> h; simulateTime(h); break;
+        }
+        case 10: {
+            int t; double a;
+            cout << "Тип (0-Вода, 1-Еда, 2-Кислород, 3-Топливо, 4-Электричество): "; cin >> t;
+            cout << "Количество: "; cin >> a;
+            addResource((ResourceType)t, a);
+            break;
+        }
+        case 11: showStatus(); break;
+        case 12: saveData(); break;
+        case 13: loadData(); break;
+        case 0: cout << "До свидания!\n"; break;
+        default: cout << "Неверный выбор!\n";
+        }
+        } while (choice != 0);
+    }
 };
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+
+    StationManager manager;
+    manager.loadData();
+    manager.run();
+
+    return 0;
+}
