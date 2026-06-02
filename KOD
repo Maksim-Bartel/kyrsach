@@ -293,6 +293,18 @@ void saveData() {
     cout << "Игра успешно сохранена!\n";
 }
 
+voidData() {
+    ifstream resFile("resources.txt");
+    if (resFile.is_open()) {
+        size_t size; resFile >> size;
+        resources.clear();
+        for (size_t i = 0; i < size; i++) {
+            Resource r; r.load(resFile);
+            resources.push_back(r);
+        }
+    }
+}
+
 void showResources() const {
     cout << "\n=== РЕСУРСЫ СТАНЦИИ ===\n";
     for (const auto& r : resources) r.print();
