@@ -274,7 +274,7 @@ void initializeDefaultData() {
     modules.push_back(Module(nextModuleId++, "Энергия-3", ModuleType::ENGINEERING, 3, 200));
 }
 
-void saveGame() {
+void saveData() {
     ofstream resFile("resources.txt");
     resFile << resources.size() << "\n";
     for (const auto& r : resources) r.save(resFile);
