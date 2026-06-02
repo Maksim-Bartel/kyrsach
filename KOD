@@ -442,6 +442,16 @@ void run() {
             assignCrewToModule(cid, mid);
             break;
         }
+        case 9: {
+            int h; cout << "Часы: "; cin >> h; simulateTime(h); break;
+        }
+        case 10: {
+            int t; double a;
+            cout << "Тип (0-Вода, 1-Еда, 2-Кислород, 3-Топливо, 4-Электричество): "; cin >> t;
+            cout << "Количество: "; cin >> a;
+            addResource((ResourceType)t, a);
+            break;
+        }
         }
     }
 };
