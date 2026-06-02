@@ -452,6 +452,12 @@ void run() {
             addResource((ResourceType)t, a);
             break;
         }
+        case 11: showStatus(); break;
+        case 12: saveData(); break;
+        case 13: loadData(); break;
+        case 0: cout << "До свидания!\n"; break;
+        default: cout << "Неверный выбор!\n";
         }
+        } while (choice != 0);
     }
 };
